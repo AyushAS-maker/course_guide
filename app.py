@@ -43,21 +43,22 @@ def home():
 
 
 # Recommendation route
-@app.route("/recommend", methods=["POST"])
+@app.route("/recommend", methods=["GET", "POST"])
 def recommend():
 
-    desired_skill = request.form["desired_skill"]
-    current_skills = request.form["current_skills"]
-    level = request.form["level"]
-    duration = request.form["duration"]
+    if request.method == "POST":
+        desired_skill = request.form["desired_skill"]
+        current_skills = request.form["current_skills"]
+        level = request.form["level"]
+        duration = request.form["duration"]
 
-    # Create user profile text
-    user_profile = f"{desired_skill} {current_skills} {level} {duration}"
+        user_profile = f"{desired_skill} {current_skills} {level} {duration}"
 
-    courses = recommend_from_input(user_profile)
+        courses = recommend_from_input(user_profile)
 
-    return render_template("index.html", courses=courses)
+        return render_template("index.html", courses=courses)
 
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
